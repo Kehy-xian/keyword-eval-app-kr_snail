@@ -1,0 +1,27 @@
+#!/bin/bash
+echo "INFO: Running postBuild script..."
+
+echo "INFO: Updating system font cache with fc-cache..."
+fc-cache -fv
+echo "INFO: fc-cache -fv finished."
+
+echo "INFO: Attempting to rebuild matplotlib font cache via Python script..."
+python -c "
+import matplotlib.font_manager
+try:
+    print('Rebuilding Matplotlib font cache using _rebuild()...')
+    matplotlib.font_manager._rebuild() # Matplotlib 3.3+ 에서 사용 가능
+    print('Matplotlib font cache rebuilt successfully using _rebuild().')
+except AttributeError:
+    try:
+        print('_rebuild() not found, attempting FontManager re-instantiation...')
+        # FontManager 인스턴스를 새로 만들어 전역 인스턴스를 교체함으로써 캐시 리빌드를 유도
+        new_fm = matplotlib.font_manager.FontManager()
+        matplotlib.font_manager.fontManager = new_fm
+        print('FontManager re-instantiated successfully.')
+    except Exception as e_fm:
+        print(f'Error during FontManager re-instantiation: {e_fm}')
+except Exception as e:
+    print(f'Error rebuilding Matplotlib font cache: {e}')
+"
+echo "INFO: postBuild script finished."
