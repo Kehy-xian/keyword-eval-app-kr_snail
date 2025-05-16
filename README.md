@@ -14,3 +14,4 @@ WARNING:matplotlib.font_manager:Could not save font_manager cache [Errno 2] No s
 
 - requirements.txt, apt.txt(예: fonts-nanum-extra)만 정상적으로 설치되면 한글폰트와 그래프 출력에 문제가 없습니다.
 - 혹시 폰트 깨짐, 그래프 출력 오류가 있으면 알려주세요!
+
